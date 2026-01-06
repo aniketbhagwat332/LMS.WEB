@@ -1,0 +1,212 @@
+﻿@model LMS.Repository.Models.AdminDashboardVM
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    /* Page animation */
+    .dashboard-wrapper {
+        animation: fadeUp 0.6s ease;
+    }
+
+    h2 {
+        color: #1f2937;
+        animation: fadeDown 0.6s ease;
+    }
+
+    /* KPI cards */
+    .kpi-card {
+        border-radius: 16px;
+        border: none;
+        color: #fff;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .kpi-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+    .kpi-users {
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+    }
+
+    .kpi-students {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .kpi-instructors {
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    }
+
+    .kpi-courses {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .kpi-lessons {
+        background: linear-gradient(135deg, #ec4899, #db2777);
+    }
+
+    .kpi-enrollments {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    }
+
+    /* Quick action buttons */
+    .quick-btn {
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        background: #ffffff;
+    }
+
+        .quick-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+    /* Animations */
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container-fluid dashboard-wrapper">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">🛡️ Admin Dashboard</h2>
+        <p class="text-muted">
+            System overview & administration control panel
+        </p>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-2">
+            <div class="card kpi-card kpi-users text-center">
+                <div class="card-body">
+                    <h3 class="fw-bold">@Model.TotalUsers</h3>
+                    <span>Users</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card kpi-card kpi-students text-center">
+                <div class="card-body">
+                    <h3 class="fw-bold">@Model.TotalStudents</h3>
+                    <span>Students</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card kpi-card kpi-instructors text-center">
+                <div class="card-body">
+                    <h3 class="fw-bold">@Model.TotalInstructors</h3>
+                    <span>Instructors</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card kpi-card kpi-courses text-center">
+                <div class="card-body">
+                    <h3 class="fw-bold">@Model.TotalCourses</h3>
+                    <span>Courses</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card kpi-card kpi-lessons text-center">
+                <div class="card-body">
+                    <h3 class="fw-bold">@Model.TotalLessons</h3>
+                    <span>Lessons</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card kpi-card kpi-enrollments text-center">
+                <div class="card-body">
+                    <h3 class="fw-bold">@Model.TotalEnrollments</h3>
+                    <span>Enrollments</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="row g-3 mt-3">
+
+        <div class="col-md-3">
+            <a asp-controller="Admin" asp-action="Users"
+               class="btn btn-outline-primary w-100 py-2 quick-btn">
+                👥 Manage Users
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a asp-controller="Courses" asp-action="Index"
+               class="btn btn-outline-secondary w-100 py-2 quick-btn">
+                📚 Manage Courses
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-outline-success w-100 py-2 quick-btn" disabled>
+                📊 Reports (Coming Soon)
+            </button>
+        </div>
+
+        <div class="col-md-3">
+            <a asp-controller="Admin" asp-action="PendingUsers"
+               class="btn btn-outline-warning w-100 py-2 quick-btn">
+                ⏳ Pending Users
+            </a>
+        </div>
+
+
+        <div class="col-md-3">
+            <a asp-controller="Admin" asp-action="Analytics"
+               class="btn btn-outline-info w-100 py-2 quick-btn">
+                📊 View Analytics
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-outline-dark w-100 py-2 quick-btn" disabled>
+                ⚙️ System Settings
+            </button>
+        </div>
+
+    </div>
+
+</div>

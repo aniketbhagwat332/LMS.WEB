@@ -1,0 +1,35 @@
+﻿@model IEnumerable<LMS.Repository.Models.Lesson>
+@{
+    var courseId = (int)ViewBag.CourseId;
+}
+
+<h2>Lessons</h2>
+
+<p>
+    <a asp-action="Create" asp-route-courseId="@courseId" class="btn btn-primary">
+        Add Lesson
+    </a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Order</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var l in Model)
+        {
+            <tr>
+                <td>@l.LessonTitle</td>
+                <td>@l.OrderNo</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@l.LessonId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@l.LessonId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,50 @@
+﻿@model LMS.Repository.Models.User
+
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 80vh;">
+    <div class="col-md-5">
+
+        <div class="card shadow border-0">
+            <div class="card-body p-4">
+
+                <h3 class="text-center mb-3">Create Account</h3>
+                <p class="text-center text-muted">
+                    Account requires admin approval
+                </p>
+
+                <form method="post">
+
+                    <div class="mb-3">
+                        <label>Full Name</label>
+                        <input asp-for="FullName" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input asp-for="Email" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input asp-for="Password" type="password" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Role</label>
+                        <select asp-for="Role" class="form-select">
+                            <option value="Student">Student</option>
+                            <option value="Instructor">Instructor</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary w-100">
+                        Register
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

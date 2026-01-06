@@ -1,0 +1,50 @@
+﻿@model LMS.Repository.Models.AnalyticsVM
+
+<h2>📊 Analytics Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="userChart"></canvas>
+    </div>
+
+    <div class="col-md-6">
+        <canvas id="courseChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // USER DISTRIBUTION
+    new Chart(document.getElementById('userChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Students', 'Instructors', 'Admins'],
+            datasets: [{
+                data: [
+                    @Model.Students,
+                    @Model.Instructors,
+                    @Model.Admins
+                ],
+                backgroundColor: ['#0d6efd', '#198754', '#6c757d']
+            }]
+        }
+    });
+
+    // COURSE STATUS
+    new Chart(document.getElementById('courseChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Approved', 'Pending', 'Rejected'],
+            datasets: [{
+                label: 'Courses',
+                data: [
+                    @Model.ApprovedCourses,
+                    @Model.PendingCourses,
+                    @Model.RejectedCourses
+                ],
+                backgroundColor: ['#198754', '#ffc107', '#dc3545']
+            }]
+        }
+    });
+</script>

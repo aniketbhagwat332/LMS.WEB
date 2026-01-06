@@ -1,0 +1,109 @@
+﻿@model IEnumerable<LMS.Repository.Models.InstructorDashboardDTO>
+
+@{
+    ViewData["Title"] = "Instructor Dashboard";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">🎓 Instructor Dashboard</h2>
+        <p class="text-muted">
+            Manage your courses and learning content
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="d-flex justify-content-end mb-3">
+                <a asp-controller="Instructor"
+                   asp-action="CreateCourse"
+                   class="btn btn-primary">
+                    ➕ Create Course
+                </a>
+            </div>
+
+
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Course Title</th>
+                        <th class="text-center">Lessons</th>
+                        <th class="text-center">Enrollments</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No courses found.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var course in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@course.CourseTitle</strong>
+                                </td>
+
+                                <td class="text-center">
+                                    @course.LessonCount
+                                </td>
+
+                                <td class="text-center">
+                                    @course.EnrollmentCount
+                                </td>
+
+                                <td class="text-center">
+                                    <span class="badge bg-secondary">
+                                        @course.Status
+                                    </span>
+                                </td>
+
+                                <td class="text-end">
+                                    <a asp-controller="Courses"
+                                       asp-action="Details"
+                                       asp-route-id="@course.CourseId"
+                                       class="btn btn-sm btn-outline-primary me-1">
+                                        View
+                                    </a>
+
+                                    <a asp-controller="Courses"
+                                       asp-action="Edit"
+                                       asp-route-id="@course.CourseId"
+                                       class="btn btn-sm btn-outline-secondary me-1">
+                                        Edit
+                                    </a>
+
+                                    <a asp-controller="Lessons"
+                                       asp-action="Index"
+                                       asp-route-courseId="@course.CourseId"
+                                       class="btn btn-sm btn-outline-success">
+                                        Lessons
+                                    </a>
+                                    <a asp-controller="LiveSessions"
+                                       asp-action="Index"
+                                       asp-route-courseId="@course.CourseId"
+                                       class="btn btn-sm btn-outline-warning">
+                                        🎥 Live Sessions
+                                    </a>
+
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>

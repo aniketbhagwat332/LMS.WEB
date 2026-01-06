@@ -1,0 +1,60 @@
+﻿@model IEnumerable<LMS.Repository.Models.Lesson>
+
+@{
+    int enrollmentId = (int)ViewBag.EnrollmentId;
+    List<int> completed = ViewBag.CompletedLessonIds as List<int>;
+}
+
+<h2>Course Lessons</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Lesson</th>
+            <th>Order</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lesson in Model)
+        {
+            bool isCompleted = completed.Contains(lesson.LessonId);
+
+            <tr>
+                <td>@lesson.LessonTitle</td>
+                <td>@lesson.OrderNo</td>
+                <td>
+                    @if (isCompleted)
+                    {
+                        <span class="badge bg-success">✔ Completed</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Pending</span>
+                    }
+                </td>
+                <td>
+                    @if (!isCompleted)
+                    {
+                        <form asp-controller="Progress"
+                              asp-action="Complete"
+                              method="post">
+                            <input type="hidden" name="lessonId" value="@lesson.LessonId" />
+                            <input type="hidden" name="enrollmentId" value="@enrollmentId" />
+                            <button class="btn btn-sm btn-success">
+                                Mark Completed
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-outline-success" disabled>
+                            Completed
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

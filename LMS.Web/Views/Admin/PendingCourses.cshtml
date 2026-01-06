@@ -1,0 +1,37 @@
+﻿@model IEnumerable<LMS.Repository.Models.Course>
+
+<h2 class="mb-4">📋 Pending Course Approvals</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>Course</th>
+            <th>Instructor</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.CourseTitle</td>
+                <td>@course.Instructor.FullName</td>
+                <td>
+                    <span class="badge bg-warning">@course.Status</span>
+                </td>
+                <td class="d-flex gap-2">
+                    <form asp-action="ApproveCourse" method="post">
+                        <input type="hidden" name="courseId" value="@course.CourseId" />
+                        <button class="btn btn-success btn-sm">Approve</button>
+                    </form>
+
+                    <form asp-action="RejectCourse" method="post">
+                        <input type="hidden" name="courseId" value="@course.CourseId" />
+                        <button class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

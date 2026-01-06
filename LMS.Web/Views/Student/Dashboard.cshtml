@@ -1,0 +1,133 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+
+    int totalCourses = Model.Count();
+    int avgProgress = totalCourses > 0
+        ? (int)Model.Average(x => (int)x.Percentage)
+        : 0;
+
+    int completedCourses = Model.Count(x => (int)x.Percentage == 100);
+    int pendingCourses = totalCourses - completedCourses;
+}
+
+<!-- ===================== DASHBOARD HEADER ===================== -->
+<div class="mb-4">
+    <h2>🎓 Student Dashboard</h2>
+    <p class="text-muted">Track your learning progress and continue courses</p>
+</div>
+
+<!-- ===================== KPI CARDS ===================== -->
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h4>@totalCourses</h4>
+                <p class="text-muted mb-0">My Courses</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h4>@avgProgress%</h4>
+                <p class="text-muted mb-0">Avg Progress</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h4>@completedCourses</h4>
+                <p class="text-muted mb-0">Completed</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h4>@pendingCourses</h4>
+                <p class="text-muted mb-0">In Progress</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===================== COURSE LIST ===================== -->
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You are not enrolled in any courses yet.
+        <a asp-controller="Courses" asp-action="Available">
+            Browse Courses
+        </a>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            int progress = (int)item.Percentage;
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            @item.Enrollment.Course.CourseTitle
+                        </h5>
+
+                        <p class="text-muted mb-1">
+                            Instructor: @item.Enrollment.Course.Instructor.FullName
+                        </p>
+
+                        <!-- Progress -->
+                        <div class="mb-2">
+                            <small class="text-muted">Progress</small>
+                            <div class="progress">
+                                <div class="progress-bar bg-success"
+                                     style="width:@progress%">
+                                    @progress%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Badge -->
+                        @if (progress == 100)
+                        {
+                            <span class="badge bg-success mb-2">
+                                Completed
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark mb-2">
+                                In Progress
+                            </span>
+                        }
+
+                        <!-- Action -->
+                        <div class="mt-3">
+                            <a asp-controller="Student"
+                               asp-action="CourseLessons"
+                               asp-route-enrollmentId="@item.Enrollment.EnrollmentId"
+                               class="btn btn-primary btn-sm w-100">
+                                Continue Learning
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}

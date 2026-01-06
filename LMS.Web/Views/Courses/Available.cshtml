@@ -1,0 +1,35 @@
+﻿@model IEnumerable<LMS.Repository.Models.Course>
+
+<h2>Available Courses</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">@TempData["Message"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Description</th>
+            <th>Instructor</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var c in Model)
+{
+        <tr>
+            <td>@c.CourseTitle</td>
+            <td>@c.Description</td>
+            <td>@c.Instructor?.FullName</td>
+            <td>
+                <form asp-controller="Enrollments" asp-action="Enroll" method="post">
+                    <input type="hidden" name="courseId" value="@c.CourseId" />
+                    <button class="btn btn-success btn-sm">Enroll</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<LMS.Repository.Models.User>
+
+<h2>⏳ Pending Users</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>
+                    <form asp-action="ApproveUser" method="post">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <button class="btn btn-success btn-sm">
+                            Approve
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
