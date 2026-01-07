@@ -58,7 +58,9 @@ namespace LMS.Services.Services
         {
             user.IsActive = false;   // 🔒 enforced rule
             user.Role = user.Role;  // Student / Instructor only
+            //user.Role = "Admin";  // Student / Instructor only
             user.Password = PasswordHasher.HashPassword(user.Password);
+            //user.Password = PasswordHasher.HashPassword("admin123");
 
             await _userRepository.AddAsync(user);
             await _userRepository.SaveAsync();

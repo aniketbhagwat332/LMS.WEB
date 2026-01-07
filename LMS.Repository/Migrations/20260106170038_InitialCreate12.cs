@@ -5,7 +5,7 @@
 namespace LMS.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class AllowNullZoomFields : Migration
+    public partial class InitialCreate12 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

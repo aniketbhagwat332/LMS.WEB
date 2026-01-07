@@ -1,9 +1,12 @@
-using LMS.Repository.Data;
+﻿using LMS.Repository.Data;
 using LMS.Repository.Interfaces;
 using LMS.Repository.Repositories;
 using LMS.Services.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System;
+
+
 
 
 namespace LMS.Web
@@ -16,9 +19,16 @@ namespace LMS.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            //      builder.Services.AddDbContext<LMSDbContext>(options =>
+            //options.UseSqlServer(
+            //    builder.Configuration.GetConnectionString("LMSConnection")));
+
+
             builder.Services.AddDbContext<LMSDbContext>(options =>
-      options.UseSqlServer(
-          builder.Configuration.GetConnectionString("LMSConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("LMSConnection"),
+    x => x.MigrationsAssembly("LMS.Repository")));
+
+
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -61,7 +71,12 @@ namespace LMS.Web
 
 
             var app = builder.Build();
-
+            
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<LMSDbContext>();
+                db.Database.Migrate();   // 👈 THIS creates tables on Azure
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
