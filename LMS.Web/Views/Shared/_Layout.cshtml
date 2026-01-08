@@ -41,7 +41,7 @@
                 </a>
             </li>
         }
-                        @if (User.IsInRole("Instructor"))
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Instructor"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link"

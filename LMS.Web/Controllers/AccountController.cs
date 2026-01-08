@@ -18,8 +18,13 @@ namespace LMS.Web.Controllers
         {
             _authService = authService;
         }
-
-        public IActionResult Login() => View();
+        [AllowAnonymous]
+        public async Task<IActionResult> Login()
+        {
+            await HttpContext.SignOutAsync(); // 🔥 clears auth cookie
+            return View();
+        }
+        
 
         //[HttpPost]
         //public async Task<IActionResult> Login(string email, string password)

@@ -16,17 +16,17 @@
 
                     <div class="mb-3">
                         <label>Full Name</label>
-                        <input asp-for="FullName" class="form-control" required />
+                        <input id="Fname" asp-for="FullName" class="form-control" required/>
                     </div>
 
                     <div class="mb-3">
                         <label>Email</label>
-                        <input asp-for="Email" class="form-control" required />
+                        <input id="EmailID" asp-for="Email" class="form-control" required/>
                     </div>
 
                     <div class="mb-3">
                         <label>Password</label>
-                        <input asp-for="Password" type="password" class="form-control" required />
+                        <input id="Passwrd" asp-for="Password" type="password" class="form-control" required/>
                     </div>
 
                     <div class="mb-3">
@@ -37,7 +37,7 @@
                         </select>
                     </div>
 
-                    <button class="btn btn-primary w-100">
+                    <button id="rejBtn" type="submit" class="btn btn-primary w-100">
                         Register
                     </button>
 
@@ -48,3 +48,20 @@
 
     </div>
 </div>
+@*     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("form").on("submit",function (e) {
+            let fname = $("#Fname").val().trim();
+            let EmailID = $("#EmailID").val().trim();
+            let Passwrd = $("#Passwrd").val().trim();
+            
+            if(fname=="" || EmailID=="" || Passwrd==""){
+                alert("Please fill the fields");
+                e.preventDefault();
+            }
+        });
+    });
+</script> *@
+
