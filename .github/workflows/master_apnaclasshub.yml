@@ -7,13 +7,16 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +26,14 @@ jobs:
         with:
           dotnet-version: '9.x'
 
+      - name: Restore
+        run: dotnet restore
+
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --configuration Release --no-build
 
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
@@ -36,18 +45,20 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
+    # ✅ Deploy ONLY when code is pushed to master (not PR)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -62,4 +73,3 @@ jobs:
           app-name: 'ApnaClassHub'
           slot-name: 'Production'
           package: .
-          
