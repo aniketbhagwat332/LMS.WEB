@@ -15,7 +15,7 @@ namespace LMS.Web.Controllers
             _adminService = adminService;
         }
 
-        // 📊 ADMIN DASHBOARD Aniket Bhagwat
+        // 📊 ADMIN DASHBOARD
         public async Task<IActionResult> Dashboard()
         {
             var stats = await _adminService.GetDashboardStatsAsync();
