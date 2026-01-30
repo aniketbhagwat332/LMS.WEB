@@ -1,5 +1,6 @@
 ﻿using LMS.Repository.Interfaces;
 using LMS.Repository.Models;
+using LMS.Services.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,40 @@ namespace LMS.Services.Services
                 EnrollmentCount = c.Enrollments.Count,
                 Status = "Draft" // default for now
             }).ToList();
+        }
+        public async Task<Course?> GetCourseDetailAsync(int courseId, int userId, string role)
+        {
+            var course = await _courseRepository.GetByIdAsync(courseId);
+
+            if (course == null)
+                return null;
+
+            if (role == "Instructor" && course.InstructorId != userId)
+                throw new UnauthorizedAccessException();
+
+            return course;
+        }
+        public async Task UpdateCourseAsync(
+            UpdateCourseDTO dto,
+            int userId,
+            string role)
+        {
+            var course = await _courseRepository.GetByIdAsync(dto.CourseId);
+
+            if (course == null)
+                throw new Exception("Course not found");
+
+            if (role == "Instructor" && course.InstructorId != userId)
+                throw new UnauthorizedAccessException();
+
+            if (course.Status == "Approved" && role == "Instructor")
+                throw new Exception("Approved courses can only be edited by Admin");
+
+            course.CourseTitle = dto.CourseTitle;
+            course.Description = dto.Description;
+
+            _courseRepository.Update(course);
+            await _courseRepository.SaveAsync();
         }
 
 
