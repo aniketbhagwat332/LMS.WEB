@@ -60,7 +60,6 @@ namespace LMS.Web.Controllers
         {
             int userId = int.Parse(User.FindFirst("UserId")!.Value);
             string role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)!.Value;
-
             var course = await _courseService.GetCourseDetailAsync(id, userId, role);
 
             if (course == null)
@@ -102,5 +101,42 @@ namespace LMS.Web.Controllers
         }
 
 
+            if (course == null)
+                return NotFound();
+
+            return View(new UpdateCourseDTO
+            {
+                CourseId = course.CourseId,
+                CourseTitle = course.CourseTitle,
+                Description = course.Description
+            });
+        }
+        [HttpPost]
+        [Authorize(Roles = "Admin,Instructor")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(UpdateCourseDTO model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            try
+            {
+                int userId = int.Parse(User.FindFirst("UserId")!.Value);
+                string role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)!.Value;
+
+                await _courseService.UpdateCourseAsync(model, userId, role);
+
+                return RedirectToAction("Index");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
+            }
+        }
     }
 }
