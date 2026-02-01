@@ -56,13 +56,12 @@ namespace LMS.Web.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "Admin,Instructor")]
-        public async Task<IActionResult> Edit(int courseId)
+        public async Task<IActionResult> Edit(int id)
         {
             int userId = int.Parse(User.FindFirst("UserId")!.Value);
             string role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)!.Value;
 
-            var course = await _courseService
-                .GetCourseDetailAsync(courseId, userId, role);
+            var course = await _courseService.GetCourseDetailAsync(id, userId, role);
 
             if (course == null)
                 return NotFound();
